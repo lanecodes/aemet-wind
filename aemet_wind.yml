@@ -1,0 +1,14 @@
+name: aemet_wind
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7
+  - pip
+  - requests
+  - ipdb
+  - pandas
+  - jupyterlab
+  - nbstripout
+  - pip:
+    - mypy
+    - -e ./

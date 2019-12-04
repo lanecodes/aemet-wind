@@ -1,0 +1,12 @@
+# Secret squirrels
+secrets.py
+
+# Python fluff
+__pycache__/
+*/__pycache__/
+.mypy_cache/
+*.egg-info/
+
+# Reproducible data
+data/
+outputs/
