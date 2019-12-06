@@ -6,9 +6,13 @@ dependencies:
   - pip
   - requests
   - ipdb
+  - matplotlib
   - pandas
+  - geopandas
+  - descartes
   - jupyterlab
   - nbstripout
   - pip:
+    - pytest
     - mypy
     - -e ./
