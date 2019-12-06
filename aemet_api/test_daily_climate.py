@@ -2,7 +2,7 @@ from datetime import date
 
 import pytest
 
-from aemet_wind.daily_climate import DailyClimateQuery, _time_decompose_query
+from aemet_api.daily_climate import DailyClimateQuery, _time_decompose_query
 
 def test__time_decompose_query():
     """Test function which decomposes queries into 5 year chunks.

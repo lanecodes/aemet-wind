@@ -12,7 +12,7 @@ from typing import Dict, List, Union
 
 import requests
 
-from aemet_wind.web import get_response
+from aemet_api.web import get_response
 
 Station = Dict[str, str]
 FieldDescr = Dict[str, Union[str, bool]]
@@ -68,7 +68,7 @@ def output_path(fname: str) -> Path:
 
 
 if __name__ == '__main__':
-    from aemet_wind.secrets import API_KEY
+    from aemet_api.secrets import API_KEY
 
     station_inventory = get_station_inventory(API_KEY)
     station_inventory_to_csv(

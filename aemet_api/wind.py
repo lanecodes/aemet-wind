@@ -11,7 +11,7 @@ returns it as an iterable over daily cliamte measurements for a specific
 station. They are used like this::
 
 >>> from datetime import date
->>> from aemet_wind.secrets import API_KEY
+>>> from aemet_api.secrets import API_KEY
 >>> start_date = date(1990, 1, 1)
 >>> end_date =  date(2019, 11, 1)
 >>> query = DailyClimateQuery('6293X', start_date, end_date)
@@ -23,7 +23,7 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from typing import List, Optional
 
-from aemet_wind.daily_climate import (
+from aemet_api.daily_climate import (
     DailyClimateData, DailyClimateQuery, get_daily_climate_data
 )
 
