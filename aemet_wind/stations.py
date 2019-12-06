@@ -8,20 +8,27 @@ import csv
 from dataclasses import dataclass
 from pathlib import Path
 import logging
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import requests
 
-from aemet_wind.secrets import API_KEY
 from aemet_wind.web import get_response
 
 Station = Dict[str, str]
+FieldDescr = Dict[str, Union[str, bool]]
+MetaData = Dict[str, Union[str, List[FieldDescr]]]
 
 
 def get_station_inventory(api_key: str) -> List[Station]:
     """Get inventory of stations."""
     response = get_response(station_inventory_endpoint(api_key))
     return requests.get(response.data_url).json()
+
+
+def get_station_inventory_meta(api_key: str) -> MetaData:
+    """Metadata for inventory of stations, field descriptions etc."""
+    response = get_response(station_inventory_endpoint(api_key))
+    return requests.get(response.metadata_url).json()
 
 
 def station_inventory_endpoint(api_key: str) -> str:
@@ -39,7 +46,8 @@ def station_inventory_endpoint(api_key: str) -> str:
     )
 
 
-def station_inventory_to_csv(fname: str, stations: List[Station]) -> None:
+def station_inventory_to_csv(fname: Union[str, Path],
+                             stations: List[Station]) -> None:
     with open(fname, 'w') as csvfile:
         fieldnames = ['provincia', 'nombre', 'indicativo', 'latitud',
                       'longitud', 'altitud', 'indsinop']
@@ -60,6 +68,8 @@ def output_path(fname: str) -> Path:
 
 
 if __name__ == '__main__':
+    from aemet_wind.secrets import API_KEY
+
     station_inventory = get_station_inventory(API_KEY)
     station_inventory_to_csv(
         output_path('station_inventory.csv'), station_inventory
