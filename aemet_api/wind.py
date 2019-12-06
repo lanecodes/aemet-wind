@@ -7,7 +7,7 @@ Extract data relevant to wind speeds from daily climate data.
 The main objects to be aware of here are the `DailyClimateQuery` class which
 specifies the weather station id and date range of interest, and the
 `get_daily_wind_speed_data` function which collects the data from a query and
-returns it as an iterable over daily cliamte measurements for a specific
+returns it as an iterable over daily climate measurements for a specific
 station. They are used like this::
 
 >>> from datetime import date
