@@ -4,7 +4,7 @@ wind.py
 
 Extract data relevant to wind speeds from daily climate data.
 
-The main objects to be aware of here are the `DailyClimateQuery` class which
+The main objects to be aware of are the `DailyClimateQuery` class which
 specifies the weather station id and date range of interest, and the
 `get_daily_wind_speed_data` function which collects the data from a query and
 returns it as an iterable over daily climate measurements for a specific
@@ -24,7 +24,8 @@ from datetime import date, datetime
 from typing import List, Optional
 
 from aemet_api.daily_climate import (
-    DailyClimateData, DailyClimateQuery, get_daily_climate_data
+    DailyClimateData, DailyClimateQuery, DailyClimateQueryFunc,
+    get_daily_climate_data, run_daily_climate_query
 )
 
 
@@ -51,9 +52,30 @@ class DailyWindSpeed:
     max_gust: Optional[float]
 
 
-def get_daily_wind_speed_data(query: DailyClimateQuery,
-                              api_key: str) -> List[DailyWindSpeed]:
-    """Retrieve daily wind speed data for a station and date range."""
+def get_daily_wind_speed_data(
+        query: DailyClimateQuery,
+        api_key: str,
+        get_data_func: DailyClimateQueryFunc=None,
+    ) -> List[DailyWindSpeed]:
+    """Retrieve daily wind speed data for a station and date range.
+
+    Parameters
+    ----------
+    query:
+        Query specifying weather station and date range to collect data for.
+    api_key:
+        AEMET API key.
+    get_data_func (optional):
+        Function to use to get data from the API. Defaults to
+        `run_daily_climate_query` if `get_data_func` is None.
+
+    Notes
+    -----
+    See documentation for `get_daily_climate_data` for an explanation of the
+    motivation for allowing `get_data_func` to be user configurable.
+    """
+    if get_data_func is None:
+        get_data_func = run_daily_climate_query
     return [
         DailyWindSpeed(
             station_id=query.station_id,
@@ -61,7 +83,7 @@ def get_daily_wind_speed_data(query: DailyClimateQuery,
             ave_wind_speed=_process_wind_speed_field('velmedia', record),
             max_gust=_process_wind_speed_field('racha', record),
         )
-        for record in get_daily_climate_data(query, api_key)
+        for record in get_daily_climate_data(query, api_key, get_data_func)
     ]
 
 

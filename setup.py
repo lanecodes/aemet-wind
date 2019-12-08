@@ -6,7 +6,7 @@ setup(
     url='https://github.com/lanecodes/aemet-wind.git',
     author='Andrew Lane',
     author_email='ajlane50@gmail.com',
-    description='Download Spanish wind speed data from AEMET\'s REST API',
+    description='Download Spanish climate data from AEMET\'s REST API',
     packages=find_packages(),
     install_requires=['requests'],
 )

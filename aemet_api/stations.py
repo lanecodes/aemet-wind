@@ -12,7 +12,7 @@ from typing import Dict, List, Union
 
 import requests
 
-from aemet_api.web import get_response
+from aemet_api.web import get_api_response
 
 Station = Dict[str, str]
 FieldDescr = Dict[str, Union[str, bool]]
@@ -21,13 +21,13 @@ MetaData = Dict[str, Union[str, List[FieldDescr]]]
 
 def get_station_inventory(api_key: str) -> List[Station]:
     """Get inventory of stations."""
-    response = get_response(station_inventory_endpoint(api_key))
+    response = get_api_response(station_inventory_endpoint(api_key))
     return requests.get(response.data_url).json()
 
 
 def get_station_inventory_meta(api_key: str) -> MetaData:
     """Metadata for inventory of stations, field descriptions etc."""
-    response = get_response(station_inventory_endpoint(api_key))
+    response = get_api_response(station_inventory_endpoint(api_key))
     return requests.get(response.metadata_url).json()
 
 

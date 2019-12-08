@@ -6,6 +6,8 @@ Functions related to handling http requests.
 """
 from dataclasses import dataclass
 import logging
+import time
+from typing import Any, Callable
 
 import requests
 
@@ -32,7 +34,7 @@ class AemetHttpError(Exception):
                 f'description: {self.descripcion}')
 
 
-def get_response(endpoint_url: str) -> APIResponse:
+def get_api_response(endpoint_url: str) -> APIResponse:
     """Get a response from the AEMET API using the given endpoint URL.
 
     If there is an error, the API will just send back some JSON stating that
@@ -53,3 +55,19 @@ def get_response(endpoint_url: str) -> APIResponse:
         r.json()['datos'],
         r.json()['metadatos'],
     )
+
+
+def delay(n_seconds: int) -> Callable[[Callable], Callable]:
+    """Returns a decorator configured with number of seconds to wait.
+
+    Used to help stop the API abandoning us when we make a lot of requests.
+
+    TODO: Further scrutinse API documentaiton to acertain if there are
+    published rate limits.
+    """
+    def delay_decorator(function: Callable) -> Callable:
+        def wrapper(*args, **kwargs) -> Any:
+            time.sleep(n_seconds)
+            return function(*args, **kwargs)
+        return wrapper
+    return delay_decorator
