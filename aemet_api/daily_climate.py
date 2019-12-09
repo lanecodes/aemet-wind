@@ -154,12 +154,12 @@ def get_daily_climate_data(
 
     >>> from datetime import date
     >>> from aemet_api.secrets import API_KEY
-    >>> from web import delay
+    >>> from aemet_api.web import delay
     >>> start_date = date(1990, 1, 1)
     >>> end_date =  date(2019, 11, 1)
     >>> query = DailyClimateQuery('6293X', start_date, end_date)
     >>> func = delay(1)(run_daily_climate_query)
-    >>> daily_data = get_daily_climate_data(query, api_key, func)
+    >>> daily_data = get_daily_climate_data(query, API_KEY, func)
 
     Note
     ----
