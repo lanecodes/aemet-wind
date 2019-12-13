@@ -18,8 +18,7 @@ station. They are used like this::
 
 >>> from datetime import date
 >>> from aemet_api.secrets import API_KEY
->>> start_date = date(1990, 1, 1)
->>> end_date =  date(2019, 11, 1)
+>>> start_date, end_date = date(2019, 10, 1), date(2019, 11, 1)
 >>> query = DailyClimateQuery('6293X', start_date, end_date)
 >>> data = get_daily_climate_data(query, API_KEY)
 >>> type(data.__next__())  # data is an iterable
@@ -155,8 +154,7 @@ def get_daily_climate_data(
     >>> from datetime import date
     >>> from aemet_api.secrets import API_KEY
     >>> from aemet_api.web import delay
-    >>> start_date = date(1990, 1, 1)
-    >>> end_date =  date(2019, 11, 1)
+    >>> start_date, end_date = date(2019, 10, 1), date(2019, 11, 1)
     >>> query = DailyClimateQuery('6293X', start_date, end_date)
     >>> func = delay(1)(run_daily_climate_query)
     >>> daily_data = get_daily_climate_data(query, API_KEY, func)

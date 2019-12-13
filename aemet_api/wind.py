@@ -12,12 +12,11 @@ station. They are used like this::
 
 >>> from datetime import date
 >>> from aemet_api.secrets import API_KEY
->>> start_date = date(1990, 1, 1)
->>> end_date =  date(2019, 11, 1)
+>>> start_date, end_date = date(2019, 10, 1), date(2019, 11, 1)
 >>> query = DailyClimateQuery('6293X', start_date, end_date)
 >>> data = get_daily_wind_speed_data(query, API_KEY)
 >>> data[0]
-DailyWindSpeed(station_id='6293X', date=datetime.date(2009, 7, 19), ave_wind_speed=7.2, max_gust=17.2)
+DailyWindData(station_id='6293X', date=datetime.date(2019, 10, 1), ave_wind_speed=3.6, max_gust=13.3, direction=27)
 """
 from dataclasses import dataclass
 from datetime import date, datetime
@@ -30,7 +29,7 @@ from aemet_api.daily_climate import (
 
 
 @dataclass
-class DailyWindSpeed:
+class DailyWindData:
     """Daily wind speed record.
 
     Parameters
@@ -45,18 +44,23 @@ class DailyWindSpeed:
         response.
     max_gust:
         Maximum wind gust on `date` [m/s]. Called 'racha' in the API response.
+    direction:
+        Direction of maximum gust. Units are 'tens of degree' (decenas de
+        grado), i.e. multiply this value by 10 to get compass direction in
+        degrees. Called 'dir' in the API response.
     """
     station_id: str
     date: date
     ave_wind_speed: Optional[float]
     max_gust: Optional[float]
+    direction: Optional[int]
 
 
 def get_daily_wind_speed_data(
         query: DailyClimateQuery,
         api_key: str,
         get_data_func: DailyClimateQueryFunc=None,
-    ) -> List[DailyWindSpeed]:
+    ) -> List[DailyWindData]:
     """Retrieve daily wind speed data for a station and date range.
 
     Parameters
@@ -77,11 +81,12 @@ def get_daily_wind_speed_data(
     if get_data_func is None:
         get_data_func = run_daily_climate_query
     return [
-        DailyWindSpeed(
+        DailyWindData(
             station_id=query.station_id,
             date=datetime.strptime(record['fecha'], '%Y-%m-%d').date(),
             ave_wind_speed=_process_wind_speed_field('velmedia', record),
             max_gust=_process_wind_speed_field('racha', record),
+            direction=_process_wind_direction_field('dir', record),
         )
         for record in get_daily_climate_data(query, api_key, get_data_func)
     ]
@@ -100,3 +105,18 @@ def _process_wind_speed_field(field_name: str,
         return None
 
     return float(value.replace(',', '.'))
+
+
+def _process_wind_direction_field(field_name: str,
+                                  record: DailyClimateData) -> Optional[int]:
+    """Convert wind direction value to float, handle missing data.
+
+    Wind speed values are not required fields, so some None values are
+    expected.
+    """
+    try:
+        value = record[field_name]
+    except KeyError:
+        return None
+
+    return int(value)

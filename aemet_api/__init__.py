@@ -11,7 +11,7 @@ from aemet_api.daily_climate import (
     run_daily_climate_query
 )
 from aemet_api.wind import (
-    DailyWindSpeed, get_daily_wind_speed_data
+    DailyWindData, get_daily_wind_speed_data
 )
 
 API_KEY_ADVICE = ('You will need to obtain your own API key from '
