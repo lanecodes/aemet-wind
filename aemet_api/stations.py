@@ -65,12 +65,3 @@ def output_path(fname: str) -> Path:
     d = Path('outputs')
     d.mkdir(exist_ok=True)
     return d / fname
-
-
-if __name__ == '__main__':
-    from aemet_api.secrets import API_KEY
-
-    station_inventory = get_station_inventory(API_KEY)
-    station_inventory_to_csv(
-        output_path('station_inventory.csv'), station_inventory
-    )
