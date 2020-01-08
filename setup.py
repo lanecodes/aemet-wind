@@ -8,5 +8,5 @@ setup(
     author_email='ajlane50@gmail.com',
     description='Download Spanish climate data from AEMET\'s REST API',
     packages=find_packages(),
-    install_requires=['requests'],
+    install_requires=['requests', 'pandas', 'geopandas', 'shapely'],
 )
