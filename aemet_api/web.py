@@ -7,7 +7,7 @@ Functions related to handling http requests.
 from dataclasses import dataclass
 import logging
 import time
-from typing import Any, Callable
+from typing import Any, Callable, Optional
 
 import requests
 
@@ -71,3 +71,14 @@ def delay(n_seconds: int) -> Callable[[Callable], Callable]:
             return function(*args, **kwargs)
         return wrapper
     return delay_decorator
+
+
+def check_internet() -> Optional[bool]:
+    url='https://duckduckgo.com/'
+    timeout=5
+    try:
+        _ = requests.get(url, timeout=timeout)
+        return True
+    except requests.ConnectionError:
+        logging.error("Could not connect to the internet.")
+        raise
