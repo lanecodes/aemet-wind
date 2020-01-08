@@ -1,10 +1,5 @@
 # Notes
 
-## Data provenance
-
-`data/site_location_info.csv` comes from running
-[EPDquery](https://zenodo.org/badge/latestdoi/225420303)
-
 ## Reason for not using Swagger Codegen client
 
 I did originally attempt to use the `swagger_client`
