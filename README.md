@@ -1,5 +1,7 @@
 # AEMET Wind
 
+[![DOI](https://zenodo.org/badge/232559029.svg)](https://zenodo.org/badge/latestdoi/232559029)
+
 Download Spanish wind speed data from AEMET's REST API.
 
 The project [`python-aemet`](https://github.com/pablo-moreno/python-aemet)
